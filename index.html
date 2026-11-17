@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fahad Shop | অনলাইন শপ</title>
+<style>
+:root{--navy:#142b49;--blue:#245b91;--gold:#f3b544;--bg:#f5f7fa;--ink:#182230}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--navy);color:white;padding:16px max(16px,calc((100% - 1100px)/2));display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.brand{font-size:24px;font-weight:800;letter-spacing:.4px}.tag{font-size:13px;color:#d8e5f4}
+.cartbtn{background:var(--gold);border:0;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer}
+main{max-width:1100px;margin:auto;padding:20px 16px}
+.hero{background:linear-gradient(120deg,#17375c,#3474a8);color:white;padding:28px;border-radius:18px;margin:4px 0 20px}
+.hero h1{font-size:clamp(25px,5vw,40px);margin:0 0 8px}.hero p{margin:0;color:#e4eef8}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.tools input,.tools select{padding:12px;border:1px solid #d5dce5;border-radius:10px;background:white;font:inherit;flex:1;min-width:180px}
+h2{font-size:21px;margin:22px 0 12px}.cats{display:flex;gap:8px;overflow:auto;padding-bottom:8px}.cat{white-space:nowrap;border:1px solid #d5dce5;background:white;border-radius:999px;padding:9px 14px;cursor:pointer}.cat.active{background:var(--navy);color:white}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px}.product{background:white;border:1px solid #e4e8ee;border-radius:14px;overflow:hidden}.pic{height:125px;display:grid;place-items:center;background:#edf2f7;font-size:48px}.info{padding:12px}.name{font-weight:700}.price{color:#1d6b45;font-weight:800;margin:7px 0}.add{width:100%;background:var(--navy);color:white;border:0;border-radius:9px;padding:10px;font:inherit;cursor:pointer}
+.panel{background:white;border:1px solid #e0e5ec;border-radius:14px;padding:16px;margin-top:18px}.hidden{display:none}.cartline{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #edf0f3;padding:9px 0}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.field label{display:block;font-weight:650;font-size:14px;margin-bottom:5px}.field input,.field textarea,.field select{width:100%;padding:11px;border:1px solid #ccd5df;border-radius:9px;font:inherit}.field textarea{min-height:75px}.submit{background:#1d7049;color:white;border:0;border-radius:10px;padding:12px 18px;font:inherit;font-weight:700;cursor:pointer;margin-top:12px}
+.note{font-size:13px;color:#5b6572;line-height:1.6}.notice{background:#fff6df;border:1px solid #f0d38c;padding:12px;border-radius:10px;margin-top:12px;font-size:13px}
+footer{text-align:center;padding:24px;color:#647184;font-size:13px}
+</style>
+</head>
+<body>
+<header><div><div class="brand">🛍️ FAHAD SHOP</div><div class="tag">আপনার পছন্দের সব পণ্য, এক ঠিকানায়</div></div><button class="cartbtn" onclick="document.getElementById('cart').scrollIntoView({behavior:'smooth'})">🛒 কার্ট (<span id="count">0</span>)</button></header>
+<main>
+<section class="hero"><h1>স্বাগতম Fahad Shop-এ</h1><p>পছন্দের পণ্য বেছে নিন, অর্ডার করুন সহজেই।</p></section>
+<div class="tools"><input id="search" placeholder="পণ্য খুঁজুন..." oninput="render()"><select id="sort" onchange="render()"><option value="default">সাজান: ডিফল্ট</option><option value="low">দাম: কম থেকে বেশি</option><option value="high">দাম: বেশি থেকে কম</option></select></div>
+<h2>পণ্যের ক্যাটাগরি</h2><div class="cats" id="cats"></div>
+<h2>জনপ্রিয় পণ্য</h2><section class="grid" id="products"></section>
+<section class="panel" id="cart"><h2>তোমার শপিং কার্ট</h2><div id="cartitems">এখনো কোনো পণ্য যোগ করা হয়নি।</div><p><b>মোট: ৳<span id="total">0</span></b></p></section>
+<section class="panel"><h2>অর্ডার সম্পন্ন করুন</h2><p class="note">কার্টে পণ্য যোগ করে নিচের তথ্য পূরণ করুন।</p>
+<form id="orderform"><div class="formgrid">
+<div class="field"><label>আপনার নাম</label><input required id="customer" placeholder="নাম লিখুন"></div>
+<div class="field"><label>মোবাইল নম্বর</label><input required id="phone" inputmode="tel" placeholder="01XXXXXXXXX"></div>
+<div class="field"><label>জেলা</label><input required id="district" placeholder="আপনার জেলা"></div>
+<div class="field"><label>সম্পূর্ণ ঠিকানা</label><textarea required id="address" placeholder="বাড়ি/রোড/এলাকা"></textarea></div>
+<div class="field"><label>পেমেন্ট পদ্ধতি</label><select id="payment"><option>ক্যাশ অন ডেলিভারি</option><option>বিকাশ</option><option>নগদ</option></select></div>
+</div><button class="submit" type="submit">অর্ডার তথ্য তৈরি করুন</button></form>
+<div id="result" class="notice hidden"></div>
+<div class="notice"><b>দোকান চালু করার আগে:</b> বিকাশ/নগদের মার্চেন্ট বা পেমেন্ট নির্দেশনা, অর্ডার গ্রহণের WhatsApp নম্বর এবং আসল পণ্যের তথ্য যোগ করতে হবে। এই নমুনা সাইটে এখনো অনলাইন পেমেন্ট বা সার্ভারে অর্ডার সংরক্ষণের ব্যবস্থা যুক্ত নেই।</div>
+</section>
+</main><footer>© Fahad Shop — সব ধরনের পণ্যের অনলাইন শপ</footer>
+<script>
+const items=[
+{name:"টি-শার্ট",cat:"পোশাক",price:450,emoji:"👕"},{name:"স্পোর্টস জুতা",cat:"জুতা",price:1250,emoji:"👟"},
+{name:"হাতঘড়ি",cat:"ঘড়ি",price:850,emoji:"⌚"},{name:"ওয়্যারলেস ইয়ারবাড",cat:"ইলেকট্রনিকস",price:990,emoji:"🎧"},
+{name:"স্কিন কেয়ার সেট",cat:"কসমেটিকস",price:650,emoji:"🧴"},{name:"ব্যাকপ্যাক",cat:"ব্যাগ",price:780,emoji:"🎒"},
+{name:"পানির বোতল",cat:"ঘর ও রান্নাঘর",price:280,emoji:"🥤"},{name:"সানগ্লাস",cat:"ফ্যাশন",price:550,emoji:"🕶️"}
+];
+let category="সব",cart={};
+const categories=["সব",...new Set(items.map(x=>x.cat))];
+document.getElementById("cats").innerHTML=categories.map(c=>`<button class="cat ${c==="সব"?"active":""}" onclick="choose('${c}',this)">${c}</button>`).join("");
+function choose(c,el){category=c;document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));el.classList.add("active");render()}
+function render(){
+ let q=document.getElementById("search").value.toLowerCase(),list=items.filter(x=>(category==="সব"||x.cat===category)&&x.name.toLowerCase().includes(q));
+ let sort=document.getElementById("sort").value;if(sort==="low")list.sort((a,b)=>a.price-b.price);if(sort==="high")list.sort((a,b)=>b.price-a.price);
+ document.getElementById("products").innerHTML=list.map(x=>`<article class="product"><div class="pic">${x.emoji}</div><div class="info"><div class="name">${x.name}</div><div class="note">${x.cat}</div><div class="price">৳${x.price}</div><button class="add" onclick="add('${x.name}')">কার্টে যোগ করুন</button></div></article>`).join("")||"<p>কোনো পণ্য পাওয়া যায়নি।</p>";
+ updateCart();
+}
+function add(n){cart[n]=(cart[n]||0)+1;updateCart()}
+function updateCart(){let names=Object.keys(cart),count=names.reduce((s,n)=>s+cart[n],0),total=names.reduce((s,n)=>s+items.find(x=>x.name===n).price*cart[n],0);document.getElementById("count").textContent=count;document.getElementById("total").textContent=total;document.getElementById("cartitems").innerHTML=names.length?names.map(n=>{let p=items.find(x=>x.name===n);return `<div class="cartline"><span>${n} × ${cart[n]}</span><span>৳${p.price*cart[n]} <button onclick="cart['${n}']--;if(!cart['${n}'])delete cart['${n}'];updateCart()">−</button></span></div>`}).join(""):"এখনো কোনো পণ্য যোগ করা হয়নি।"}
+document.getElementById("orderform").addEventListener("submit",e=>{e.preventDefault();if(!Object.keys(cart).length){alert("আগে কার্টে পণ্য যোগ করুন।");return}let summary=Object.keys(cart).map(n=>`${n} × ${cart[n]}`).join(", ");let total=Object.keys(cart).reduce((s,n)=>s+items.find(x=>x.name===n).price*cart[n],0);let details=`নাম: ${customer.value}\nমোবাইল: ${phone.value}\nজেলা: ${district.value}\nঠিকানা: ${address.value}\nপেমেন্ট: ${payment.value}\nপণ্য: ${summary}\nমোট: ৳${total}`;let r=document.getElementById("result");r.classList.remove("hidden");r.innerHTML="<b>অর্ডারের তথ্য তৈরি হয়েছে!</b><br>নিচের তথ্য কপি করে দোকানদারকে পাঠান:<br><pre style='white-space:pre-wrap'></pre><button class='submit' type='button' onclick='copyOrder()'>অর্ডার কপি করুন</button>";r.querySelector("pre").textContent=details;window.lastOrder=details;r.scrollIntoView({behavior:"smooth"});});
+function copyOrder(){navigator.clipboard?.writeText(window.lastOrder).then(()=>alert("অর্ডারের তথ্য কপি হয়েছে।")).catch(()=>alert(window.lastOrder))}
+render();
+</script>
+</body></html>
